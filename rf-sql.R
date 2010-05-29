@@ -16,21 +16,31 @@ sql <- function (s) {
 
 
 sqlCreateDailyOHLCTable <- function( x.table ) {
-	sql(paste("CREATE TABLE ", x.table, "(",
-		"Date 		DATE,",
-		"Symbol		CHAR(10),",
-		"Open		REAL,",
-		"High		REAL,",
-		"Low		REAL,",
-		"Close		REAL,",
-		"Volume		BIGINT,",
-		"Adjusted	REAL",
-		");"
-	))
+	# Create a table (called x.table) to hold the OHLC data
+	#	x.table	[STRING]
+	#
+	if( !dbExistsTable(global_SQL_con, x.table) ) {
+		# The table doesn't already exist
+		sql(paste("CREATE TABLE ", x.table, "(",
+			"Date		DATE,",
+            "Symbol		CHAR(10),",
+            "Open		REAL,",
+			"High		REAL,",
+			"Low		REAL,",
+			"Close		REAL,",
+			"Volume		BIGINT,",
+			"Adjusted	REAL",
+			");"
+		))
+	}
 }
 
 
 sqlWriteOHLC <- function( x.table, x.symbol ) {
+	# Write the data for the symbol x.symbol into table x.table
+	#	x.table		[STRING]
+	#	x.symbol	[STRING]
+	#
 	dbWriteTable(global_SQL_con, x.table,
 		cbind( x.symbol, as.data.frame(get(x.symbol)) ),
 		append = TRUE)
