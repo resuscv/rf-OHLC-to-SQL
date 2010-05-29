@@ -34,7 +34,23 @@ sqlWriteOHLC(tablename, "GSPC")
 sqlWriteOHLC(tablename, "IXIC")
 
 # Select some data
+
+# Note that this command does nothing in the script...
 sql(paste("select * from", tablename,"where Date < '2005-01-05';"))
+
+cat(sprintf("Price table
+    %d rows
+    %d stocks
+    %d dates from %s to %s
+  ",
+  sql("SELECT COUNT(*) FROM dummytable;"),
+  sql("SELECT COUNT(DISTINCT Symbol) FROM dummytable;"),
+  sql("SELECT COUNT(DISTINCT Date)  FROM dummytable;"),
+  sql("SELECT MIN(Date) FROM dummytable;"),
+  sql("SELECT MAX(Date) FROM dummytable;")
+))
+
+
 
 # Close the connection
 dbDisconnect(global_SQL_con)
