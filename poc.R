@@ -50,6 +50,9 @@ cat(sprintf("Price table
   sql("SELECT MAX(Date) FROM dummytable;")
 ))
 
+date.range <- sqlDateRange(tablename, "GSPC")
+cat(sprintf("Date Range from %s to %s\n",
+  date.range[1], date.range[2]))
 
 
 # Close the connection
